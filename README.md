@@ -1,3 +1,3 @@
 # animation
 
-`python -m SimpleHTTPServer`
+`gulp`
