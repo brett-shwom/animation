@@ -39,12 +39,17 @@ var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function () {
 
 })
 
+var squareTranslationVector = new Vector(1,1)
+
 function animationLoop() {
 
 	canvasContext.clear()
 
 	thing.draw()
-	thing.translationVector = thing.translationVector.add(new Vector(0.5,0.5))
+	thing.translationVector = thing.translationVector.add(squareTranslationVector) //really interpolation should be used.
+	if (thing.translationVector.y >= 768) {
+		squareTranslationVector = squareTranslationVector.rotate(90)
+	}
 
 	lines.forEach(function (line) {
 		var clone = line.clone()
