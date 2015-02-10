@@ -4,7 +4,7 @@ import { Line } from "Line"
 import { Thing } from "Thing"
 import { World } from "World"
 
-var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function (renderer) {
+var thing = new Thing(1,new Vector(100,200), new Vector(0,0), function (renderer) {
 
 	var side = 100
 
@@ -16,11 +16,7 @@ var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function (renderer) 
 	lines.push(new Line(new Vector(side,side), new Vector(-1*side,0)))
 
 	lines.forEach(function (line) {
-		var clone = line.clone()
-		clone.translationVector = clone.translationVector.add(thing.translationVector)
-
-		renderer.drawLine(clone)
-
+		renderer.drawLine(line)
 	})
 
 })
