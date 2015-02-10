@@ -5,5 +5,5 @@ export function Thing(mass, translationVector, velocityVector, drawingFunction) 
 	this.translationVector = translationVector
 	this.velocityVector = velocityVector
 	this.drawingFunction = this.draw = drawingFunction
+	/*propulsion force ?*/
 }
-

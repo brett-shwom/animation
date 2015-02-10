@@ -2,21 +2,9 @@ import { CanvasContext } from "CanvasContext"
 import { Vector } from "Vector"
 import { Line } from "Line"
 import { Thing } from "Thing"
+import { World } from "World"
 
-
-var canvasContext = new CanvasContext(document.getElementById('canvas'))
-
-var lines = []
-
-lines.push(new Line(new Vector(0,0), new Vector(100,0)))
-
-// drawLine(lines[0])
-// lines[0].translationVector = lines[0].translationVector.rotate(-45)
-// drawLine(lines[0])
-
-var x = 0
-
-var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function () {
+var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function (renderer) {
 
 	var side = 100
 
@@ -30,39 +18,24 @@ var thing = new Thing(1,new Vector(0,100), new Vector(1,1), function () {
 	lines.forEach(function (line) {
 		var clone = line.clone()
 		clone.translationVector = clone.translationVector.add(thing.translationVector)
-		//clone.translationVector = clone.translationVector.rotate(x+=0.0001)
 
-		canvasContext.drawLine(clone)
-		// line.translationVector = line.translationVector.add(new Vector(1,0))
+		renderer.drawLine(clone)
 
 	})
 
 })
 
-var squareTranslationVector = new Vector(1,1)
-
-function animationLoop() {
-
-	canvasContext.clear()
-
-	thing.draw()
-	thing.translationVector = thing.translationVector.add(squareTranslationVector) //really interpolation should be used.
-	if (thing.translationVector.y >= 768) {
-		squareTranslationVector = squareTranslationVector.rotate(90)
-	}
-
-	lines.forEach(function (line) {
-		var clone = line.clone()
-		//clone.translationVector = clone.translationVector.rotate(x+=1)
-		clone.segmentVector = clone.segmentVector.rotate(x+=1)
-
-		canvasContext.drawLine(clone)
-		// line.translationVector = line.translationVector.add(new Vector(1,0))
-
-	})
+var objects = []
 
 
+var renderer = new CanvasRenderer(document.getElementById('canvas'))
+var world = new World /*probably should pass a start timestamp*/
 
+world.objects.push(thing)
+
+function animationLoop(timestamp) {
+	world.update(timestamp)
+	renderer.update(world.objects)
 
 	requestAnimationFrame(animationLoop)
 }

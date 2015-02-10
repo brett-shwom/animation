@@ -6,7 +6,15 @@ export function Line(translationVector, segmentVector) {
 	Object.defineProperty(this, 'translatedSegmentVector', {
 		get : function () { return this.translationVector.add(this.segmentVector) }
 	})
-	this.clone = function () {
-		return new Line(new Vector(translationVector.x,translationVector.y), new Vector(segmentVector.x, segmentVector.y))
-	}
+
 }
+
+Line.prototype.clone = function () {
+	return new Line(new Vector(this.translationVector.x,this.translationVector.y), new Vector(this.segmentVector.x, this.segmentVector.y))
+}
+
+Line.prototype.draw = function (renderer) {
+	renderer.drawLine(this)
+}
+
+
