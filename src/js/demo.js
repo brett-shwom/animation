@@ -10,12 +10,10 @@ var thing = new Thing(1, new Vector(100, 200), new Vector(0, 0), function (rende
     var side = 100;
 
     var lines = [];
-
-    lines.push(new Line(new Vector(0, 0), new Vector(side, 0)));
-    lines.push(new Line(new Vector(0, 0), new Vector(0, side)));
-    lines.push(new Line(new Vector(side, side), new Vector(0, -1 * side)));
-    lines.push(new Line(new Vector(side, side), new Vector(-1 * side, 0)));
-
+    lines.push(new Line(this.translationVector, new Vector(side,0)))
+    lines.push(new Line(this.translationVector, new Vector(0,side)))
+    lines.push(new Line(this.translationVector.add(new Vector(side,side)), new Vector(0,-1*side)))
+    lines.push(new Line(this.translationVector.add(new Vector(side,side)), new Vector(-1*side,0)))
     lines.forEach(function (line) {
         renderer.drawLine(line)
     })
