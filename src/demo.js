@@ -31,7 +31,12 @@ var objects = []
 var renderer = new CanvasRenderer(document.getElementById('canvas'))
 var world = new World /*probably should pass a start timestamp*/
 
-world.objects.push(thing)
+;(Array.apply(null, Array(10))).forEach(function () {
+	var otherThing = thing.clone()
+	otherThing.translationVector = otherThing.translationVector.add(new Vector(Math.random() * 100,Math.random() * 100))
+	world.objects.push(otherThing)
+})
+
 
 function animationLoop(timestamp) {
 	world.update(timestamp)
