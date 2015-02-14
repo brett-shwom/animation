@@ -1,33 +1,46 @@
-var gulp = require('gulp')
-  , connect = require('gulp-connect')
-  , to5 = require('gulp-6to5')
-;
- 
-gulp.task('connect', function() {
-  connect.server({
-    root: './dist',
-    livereload: true
-  })
-})
- 
-gulp.task('html', function () {
-  gulp.src('./src/**/*.html')
-    .pipe(gulp.dest('dist'))
-    .pipe(connect.reload())
-})
- 
-gulp.task('js', function () {
-  gulp.src('./src/**/*.js')
-    .pipe(to5({modules : 'ignore'}))
-    .pipe(gulp.dest('dist'))
-    .pipe(connect.reload())
-})
+var gulp = require('gulp');
+var browserSync = require('browser-sync');
+var webpack = require('webpack');
+var util = require('gulp-util');
+var webpackConfig = require('./webpack.config');
 
-gulp.task('watch', function () {
-  gulp.watch(['./src/**/*.html'], ['html'])
-  gulp.watch(['./src/**/*.js'], ['js'])
+gulp.task('html', function () {
+    gulp.src('./src/**/*.html')
+        .pipe(gulp.dest('dist'));
 });
 
-gulp.task('compile', ['js', 'html'])
- 
-gulp.task('default', ['compile','connect', 'watch'])
+gulp.task('webpack', function (done) {
+    execWebpack(webpackConfig);
+    done();
+});
+var execWebpack = function (config) {
+    return webpack(config, function (err, stats) {
+        if (err) {
+            throw new util.PluginError("execWebpack", err);
+        }
+        return util.log("[execWebpack]", stats.toString({
+            colors: true
+        }));
+    });
+};
+
+gulp.task('reload', browserSync.reload);
+
+gulp.task('browser-sync', function () {
+    browserSync({
+        server: {
+            baseDir: "./dist"
+        }
+    });
+});
+
+
+gulp.task('watch', function () {
+    gulp.watch(['./src/**/*.html'], ['html']);
+    gulp.watch(['./src/**/*.js'], ['webpack']);
+    gulp.watch(['./dist/**/*.js'], ['reload']);
+    gulp.watch(['./dist/**/*.html'], ['reload']);
+});
+
+
+gulp.task('default', ['webpack', 'html', 'watch', 'browser-sync']);
