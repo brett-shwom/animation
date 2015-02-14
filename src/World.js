@@ -4,7 +4,7 @@ export function World() {
 	this.timestampOfLastUpdate = 0 /*0 probably isnt right*/
 }
 
-var GRAVITY_ACCELERATION_VECTOR = new Vector(0,-9.8) // m/s^2 -- probably need to convert to pixels/second^2
+var GRAVITY_ACCELERATION_VECTOR = new Vector(0,-2.0) // m/s^2 -- probably need to convert to pixels/second^2
 
 World.prototype.resetPartialForces = function() {
 	this.partialForces = new WeakMap
