@@ -1,6 +1,9 @@
-import {Vector}  from "./Vector";
+import { Vector } from "./Vector"
 
-export function World() {
+export function World(options) {
+    options = options || {};
+
+    this.height = options.height;
     this.objects = [];
     this.partialForces = new WeakMap;
     this.timestampOfLastUpdate = 0;
@@ -38,6 +41,15 @@ World.prototype.applyAccumulatedForces = function () {
     }.bind(this))
 };
 
+World.prototype.applyGroundCollision = function () {
+    this.objects.forEach(function (object) {
+        if (object.translationVector.y >= this.height) {
+            object.translationVector = new Vector(object.translationVector.x, this.height);
+            object.velocityVector = new Vector(object.velocityVector.x, 0);
+        }
+    }.bind(this));
+}
+
 World.prototype.update = function (timestamp) {
 
     this.timestampOfCurrentUpdate = timestamp;
@@ -48,6 +60,7 @@ World.prototype.update = function (timestamp) {
     this.applyGravity();
     //apply any other forces
     this.applyAccumulatedForces();
+    this.applyGroundCollision();
 
     // /* just a demo*/
     // this.objects.forEach(function (object) {
