@@ -3,6 +3,7 @@ var browserSync = require('browser-sync');
 var webpack = require('webpack');
 var util = require('gulp-util');
 var webpackConfig = require('./webpack.config');
+var karma = require('karma').server;
 
 gulp.task('html', function () {
     gulp.src('./src/**/*.html')
@@ -42,5 +43,10 @@ gulp.task('watch', function () {
     gulp.watch(['./dist/**/*.html'], ['reload']);
 });
 
+gulp.task('test', function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js'
+    }, done);
+});
 
 gulp.task('default', ['webpack', 'html', 'watch', 'browser-sync']);
