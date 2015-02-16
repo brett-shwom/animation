@@ -4,6 +4,7 @@ export function World(options) {
     options = options || {};
 
     this.height = options.height;
+    this.width = options.width;
     this.objects = [];
     this.partialForces = new WeakMap;
     this.timestampOfLastUpdate = 0;
@@ -82,6 +83,19 @@ World.prototype.applyGroundCollision = function () {
     }.bind(this));
 };
 
+World.prototype.applySideCollision = function () {
+    this.objects.forEach(function (object) {
+        if (object.translationVector.x >= this.width) {
+            object.translationVector = new Vector(this.width,object.translationVector.y);
+            object.velocityVector = new Vector(0,object.velocityVector.y); //what if we want the wall to be bouncy?
+        }
+        else if (object.translationVector.x <= 0) {
+            object.translationVector = new Vector(0,object.translationVector.y);
+            object.velocityVector = new Vector(0,object.velocityVector.y);
+        }
+    }.bind(this));
+};
+
 World.prototype.update = function (timestamp) {
 
     this.timestampOfCurrentUpdate = timestamp;
@@ -93,6 +107,7 @@ World.prototype.update = function (timestamp) {
     //apply any other forces
     this.applyAccumulatedForces();
     this.applyGroundCollision();
+    this.applySideCollision();
 
     // /* just a demo*/
     // this.objects.forEach(function (object) {

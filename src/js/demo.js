@@ -30,7 +30,8 @@ var objects = [];
 
 var renderer = new CanvasRenderer(document.getElementById('canvas'));
 var world = new World({
-    height : 500 //meters or pixels?
+    height : 500, //meters or pixels?
+    width : 800
 });
 
 window.world = world
