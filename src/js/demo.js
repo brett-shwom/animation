@@ -38,12 +38,19 @@ window.world = world
 
 
 window.addEventListener('keydown', function (event) {
-    if (event.keyCode === 'A'.charCodeAt(0)) { //probably need to add a force for a specific period of time...also need to add a negative force to stop the object
-        world.addForce(thing, new Vector(-100,0));
+    switch(event.keyCode) {
+        case 'A'.charCodeAt(0):
+            world.addForce(thing, new Vector(-100,0));
+            break;
+        case 'D'.charCodeAt(0):
+            world.addForce(thing, new Vector(100,0));
+            break;
+        case "J".charCodeAt(0):
+            world.addForce(thing, new Vector(0,-1000));
+            break;
+
     }
-    else if (event.keyCode === 'D'.charCodeAt(0)) {
-        world.addForce(thing, new Vector(100,0));
-    }
+
 })
 
 world.objects.push(thing);
