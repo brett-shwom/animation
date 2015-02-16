@@ -5,6 +5,8 @@ export function CanvasRenderer(canvas) {
 
 }
 
+var PIXELS_TO_METERS = 0.2; //this probably should be configurable
+
 CanvasRenderer.prototype.drawLine = function (line) {
     this.context.beginPath();
     this.context.moveTo(line.translationVector.x, line.translationVector.y);

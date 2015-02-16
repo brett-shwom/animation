@@ -30,14 +30,34 @@ var objects = [];
 
 var renderer = new CanvasRenderer(document.getElementById('canvas'));
 var world = new World({
-    height : 500
+    height : 500 //meters or pixels?
 });
+
+window.world = world
 /*probably should pass a start timestamp*/
+
+
+window.addEventListener('keydown', function (event) {
+    if (event.keyCode === 'A'.charCodeAt(0)) { //probably need to add a force for a specific period of time...
+        world.addForce(thing, new Vector(1,0));
+    }
+    else if (event.keyCode === 'D'.charCodeAt(0)) {
+        world.addForce(thing, new Vector(-1,0));
+    }
+})
 
 world.objects.push(thing);
 
+var debug = document.createElement('div')
+debug.classList.add('debug')
+debug.style.position = 'fixed'
+debug.style.right = '240px';
+debug.style.top = 0;
+document.body.appendChild(debug)
 
 function animationLoop(timestamp) {
+    document.querySelector('.debug').innerHTML = Math.round(world.objects[0].translationVector.y)
+
     world.update(timestamp);
     renderer.update(world.objects);
 
