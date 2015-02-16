@@ -46,10 +46,22 @@ World.prototype.applyAcceleration = function(object, accelerationVector) {
     );
 
 
+
     var newTranslationVector = new Vector(
-        object.translationVector.x + object.velocityVector.x * this.timeDifferenceInSeconds + 0.5 * Math.pow(accelerationVector.x * this.timeDifferenceInSeconds,2),
-        object.translationVector.y + object.velocityVector.y * this.timeDifferenceInSeconds + 0.5 * Math.pow(accelerationVector.y * this.timeDifferenceInSeconds,2)
+        object.translationVector.x + object.velocityVector.x * this.timeDifferenceInSeconds + 0.5 * accelerationVector.x * Math.pow(this.timeDifferenceInSeconds,2),
+        object.translationVector.y + object.velocityVector.y * this.timeDifferenceInSeconds + 0.5 * accelerationVector.y * Math.pow(this.timeDifferenceInSeconds,2)
     );
+
+    // if (accelerationVector.x !== 0) {
+    //     alert(
+    //         'this.timeDifferenceInSeconds: ' + this.timeDifferenceInSeconds + '\n' + 
+    //         'accelerationVector.x: ' + accelerationVector.x + '\n' + 
+    //         'newVelocityVector.x: ' + newVelocityVector.x  + "\n" +
+    //         'newTranslationVector.x: ' + newTranslationVector.x +"\n" +
+    //         'object.translationVector.x: ' + object.translationVector.x + "\n" +
+    //         'object.velocityVector.x: ' + object.velocityVector.x
+    //     )
+    // }
 
     object.velocityVector = newVelocityVector;
     object.translationVector = newTranslationVector;

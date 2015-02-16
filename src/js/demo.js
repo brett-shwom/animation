@@ -38,11 +38,11 @@ window.world = world
 
 
 window.addEventListener('keydown', function (event) {
-    if (event.keyCode === 'A'.charCodeAt(0)) { //probably need to add a force for a specific period of time...
-        world.addForce(thing, new Vector(1,0));
+    if (event.keyCode === 'A'.charCodeAt(0)) { //probably need to add a force for a specific period of time...also need to add a negative force to stop the object
+        world.addForce(thing, new Vector(-100,0));
     }
     else if (event.keyCode === 'D'.charCodeAt(0)) {
-        world.addForce(thing, new Vector(-1,0));
+        world.addForce(thing, new Vector(100,0));
     }
 })
 
@@ -56,7 +56,7 @@ debug.style.top = 0;
 document.body.appendChild(debug)
 
 function animationLoop(timestamp) {
-    document.querySelector('.debug').innerHTML = Math.round(world.objects[0].translationVector.y)
+    document.querySelector('.debug').innerHTML = (world.objects[0].velocityVector.x) + " " + (world.objects[0].translationVector.x)
 
     world.update(timestamp);
     renderer.update(world.objects);
