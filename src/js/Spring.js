@@ -1,6 +1,6 @@
 import { Vector } from "./Vector"
 
-export function Spring(springConstant ) {
+export function Spring(springConstant,associatedObject ) {
 
 	/* 	Initially:
 
@@ -14,7 +14,9 @@ export function Spring(springConstant ) {
 
 	*/
 
-	this.attachedMass = 0;
+	this.associatedObject = associatedObject;
+	this.associatedObjectInitialTranslationVector = this.associatedObject.translationVector;
+	//this.attachedMass = 0;
 	this.initialDisplacementVector = new Vector(0,0); //by default there is no displacement
 	this.springConstant = springConstant;
 	this.oscillationBeganAtTimeInMilliseconds = undefined;
@@ -29,21 +31,32 @@ Spring.prototype.startOscilating = function(timestampInMilliseconds) {
 	this.oscillationBeganAtTimeInMilliseconds = timestampInMilliseconds;
 };
 
-Spring.prototype.attachMass = function(mass) {
-	this.mass = mass;
-};
+// Spring.prototype.attachMass = function(mass) {
+// 	this.mass = mass;
+// };
 
 Spring.prototype.displacementAtTimeInMilliseconds = function(timestampInMilliseconds) {
 
+	var timestampInSeconds = timestampInMilliseconds / 1000;
+
+
+	//where did i get this crazy equation from?
 
     var initialPhase = 0; //?
 
-    var w = Math.sqrt(this.springConstant / this.mass);
+    var w = Math.sqrt(this.springConstant / this.associatedObject.mass);
 
-    var amplitude = 1;
+    var amplitude = 100; //?
     // c1 * Math.cos(w * t) + c2 * Math.sin(w * t)
-    return amplitude * Math.cos(w*t + initialPhase);
+    return amplitude * Math.cos(w*timestampInSeconds + initialPhase);
 }
+
+Spring.prototype.update = function (timestampInMilliseconds) {
+	this.associatedObject.translationVector = new Vector(
+		this.associatedObjectInitialTranslationVector.x, 
+		this.associatedObjectInitialTranslationVector.y + this.displacementAtTimeInMilliseconds(timestampInMilliseconds)
+	);
+};
 
 
 // function simpleHarmonicMotion(t,A,B,k,m) {
